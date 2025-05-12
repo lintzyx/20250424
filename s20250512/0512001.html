@@ -1,43 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .box{
-            width: 300px;
-            height: 300px;
-            background-color: red;
-            position: relative;
-           
-            
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使用 Float 排版圖片方塊</title>
+  <style>
+    body {
+        /* 使用本機預設字體 */
+        padding: 10px; /* 添加一些內邊距，避免內容緊貼邊緣 */
+    }
+
+    .row {
+      /* 使用 float 排版時，row 容器本身不需要 display: flex */
+      margin-bottom: 10px;
+      /* 清除浮動：確保 row 容器包含其浮動的子元素 */
+      overflow: hidden; /* 一種常用的清除浮動技巧 */
+      *zoom: 1; /* 針對舊版 IE 的清除浮動技巧 */
+    }
+
+    .box {
+      float: left; /* 使方塊向左浮動 */
+      height: 500px; /* 方塊高度 */
+      background-color: green; /* 即使有圖片，背景色也可以作為備用 */
+      color: white; /* 文本顏色 (如果圖片載入失敗會顯示alt文本) */
+      margin-right: 10px;
+      margin-bottom: 10px; /* 在小螢幕換行時提供底部間距 */
+      border-radius: 8px;
+      font-weight: bold;
+      overflow: hidden; /* 隱藏超出部分的圖片 */
+      position: relative; /* 設置為相對定位，以便絕對定位子元素 */
+      box-sizing: border-box; /* 將 padding 和 border 計算在元素的總寬度內 */
+    }
+
+    /* 圖片填滿方塊 */
+    .box img {
+        display: block; /* 移除圖片底部的空白 */
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* 保持圖片比例並填滿內容區域 */
+        border-radius: 8px; /* 圖片也應用圓角 */
+    }
+
+   
+
+
+    /* 清除浮動的元素 */
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* 響應式設計：根據螢幕寬度調整方塊寬度 */
+
+    /* 默認小螢幕佈局：每個方塊佔滿一行 */
+    .row .box {
+        width: calc(100% - 20px); /* 100% 減去左右內邊距或 margin */
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    /* 在螢幕寬度大於等於 600px 時的佈局 */
+    @media (min-width: 600px) {
+        .row .box {
+            margin-left: 0; /* 移除左邊距 */
+            margin-bottom: 0; /* 移除底部邊距 */
         }
-        .inner-box{
-            width: 100px;
-            height: 100px;
-            background-color: blue;
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
-          
+        .row:nth-child(1) .box {
+            width: calc(100% - 10px); /* 第一行一個方塊，減去右邊距 */
         }
-        .icon-box{
-            width: 100px;
-            height: 100px;
-            background-color: lightgreen;
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-          
+        .row:nth-child(2) .box {
+            width: calc(50% - 15px); /* 第二行兩個方塊，總共 10px 右邊距 + 10px 間隔 = 20px，每個方塊分攤 */
         }
-    </style>
+        .row:nth-child(2) .box:last-child {
+             margin-right: 0;
+        }
+        .row:nth-child(3) .box {
+            width: calc(33.33% - 20px); /* 第三行三個方塊 */
+        }
+         .row:nth-child(3) .box:last-child {
+             margin-right: 0;
+        }
+         .row:nth-child(4) .box {
+            width: calc(25% - 22.5px); /* 第四行四個方塊 */
+        }
+        .row:nth-child(4) .box:last-child {
+             margin-right: 0;
+        }
+    }
+
+  </style>
 </head>
 <body>
-        <div class="box"></div>
-        <div class="inner-box"></div>
-        <div class="icon-box"></div>
-
-    
+  <div class="row">
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 1" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+        <span class="box-overlay-text">x</span> </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="row">
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 21" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 22" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+     <div class="clearfix"></div>
+  </div>
+  <div class="row">
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 31" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 32" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 33" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+     <div class="clearfix"></div>
+  </div>
+  <div class="row">
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 41" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 42" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 43" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+    <div class="box">
+        <img src="bad.jpg" alt="圖片 44" onerror="this.onerror=null; this.src='https://placehold.co/400x500/cccccc/000000?text=無法載入圖片';">
+         <span class="box-overlay-text">x</span> </div>
+     <div class="clearfix"></div>
+  </div>
 </body>
 </html>
